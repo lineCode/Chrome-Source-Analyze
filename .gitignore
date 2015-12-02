@@ -1,0 +1,14 @@
+*.log
+*.toc
+*.aux
+*.idx
+*.out
+*.synctex.gz
+*.sdf
+*.suo
+*.opensdf
+*.pdb
+*.tlog
+*.idb
+*.obj
+*.ilk

@@ -1,0 +1,414 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="accessibility">
+      <UniqueIdentifier>{c0c20330-da81-4400-9477-7004c6398fd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="controls">
+      <UniqueIdentifier>{18541eb4-2068-4e42-a76c-5c1fd75ef321}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="controls\button">
+      <UniqueIdentifier>{739a882a-ae76-475c-9ff8-8bb7b419e6a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="widget">
+      <UniqueIdentifier>{3f4b6635-cf5c-485e-8629-3cf07e9ad93e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="focus">
+      <UniqueIdentifier>{16afe605-a40b-4172-970c-c5e4ef068ac9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="window">
+      <UniqueIdentifier>{bd5ebd4b-1bb6-409a-881b-6b755c18e659}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dragdrop">
+      <UniqueIdentifier>{53fa2024-56e5-4bbf-8c6c-d3f9de3d754e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="clipboard">
+      <UniqueIdentifier>{1706c828-48b9-4323-99cc-3d956835d0aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="layout">
+      <UniqueIdentifier>{e1f2cf68-3dda-4747-8e85-6926ff3dd8f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gfx">
+      <UniqueIdentifier>{fca55df8-4cba-46c3-accc-8adee092afe5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="app">
+      <UniqueIdentifier>{3babb799-0cf8-4968-8128-a144c7632376}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="animation">
+      <UniqueIdentifier>{938c3f12-9e0b-4cd8-80aa-19371517c6c2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="accessibility\accessibility_types.h">
+      <Filter>accessibility</Filter>
+    </ClInclude>
+    <ClInclude Include="accessibility\view_accessibility.h">
+      <Filter>accessibility</Filter>
+    </ClInclude>
+    <ClInclude Include="accessibility\view_accessibility_wrapper.h">
+      <Filter>accessibility</Filter>
+    </ClInclude>
+    <ClInclude Include="controls\native_control_win.h">
+      <Filter>controls</Filter>
+    </ClInclude>
+    <ClInclude Include="controls\native_view_host.h">
+      <Filter>controls</Filter>
+    </ClInclude>
+    <ClInclude Include="controls\native_view_host_win.h">
+      <Filter>controls</Filter>
+    </ClInclude>
+    <ClInclude Include="controls\native_view_host_wrapper.h">
+      <Filter>controls</Filter>
+    </ClInclude>
+    <ClInclude Include="controls\single_split_view.h">
+      <Filter>controls</Filter>
+    </ClInclude>
+    <ClInclude Include="controls\button\button.h">
+      <Filter>controls\button</Filter>
+    </ClInclude>
+    <ClInclude Include="controls\button\custom_button.h">
+      <Filter>controls\button</Filter>
+    </ClInclude>
+    <ClInclude Include="controls\button\image_button.h">
+      <Filter>controls\button</Filter>
+    </ClInclude>
+    <ClInclude Include="controls\button\native_button.h">
+      <Filter>controls\button</Filter>
+    </ClInclude>
+    <ClInclude Include="controls\button\native_button_win.h">
+      <Filter>controls\button</Filter>
+    </ClInclude>
+    <ClInclude Include="controls\button\native_button_wrapper.h">
+      <Filter>controls\button</Filter>
+    </ClInclude>
+    <ClInclude Include="controls\button\text_button.h">
+      <Filter>controls\button</Filter>
+    </ClInclude>
+    <ClInclude Include="widget\aero_tooltip_manager.h">
+      <Filter>widget</Filter>
+    </ClInclude>
+    <ClInclude Include="widget\message_crack.h">
+      <Filter>widget</Filter>
+    </ClInclude>
+    <ClInclude Include="widget\root_view.h">
+      <Filter>widget</Filter>
+    </ClInclude>
+    <ClInclude Include="widget\tooltip_manager.h">
+      <Filter>widget</Filter>
+    </ClInclude>
+    <ClInclude Include="widget\tooltip_manager_win.h">
+      <Filter>widget</Filter>
+    </ClInclude>
+    <ClInclude Include="widget\widget.h">
+      <Filter>widget</Filter>
+    </ClInclude>
+    <ClInclude Include="widget\widget_delegate.h">
+      <Filter>widget</Filter>
+    </ClInclude>
+    <ClInclude Include="widget\widget_win.h">
+      <Filter>widget</Filter>
+    </ClInclude>
+    <ClInclude Include="focus\accelerator_handler.h">
+      <Filter>focus</Filter>
+    </ClInclude>
+    <ClInclude Include="focus\focus_manager.h">
+      <Filter>focus</Filter>
+    </ClInclude>
+    <ClInclude Include="focus\focus_search.h">
+      <Filter>focus</Filter>
+    </ClInclude>
+    <ClInclude Include="focus\focus_util_win.h">
+      <Filter>focus</Filter>
+    </ClInclude>
+    <ClInclude Include="focus\view_storage.h">
+      <Filter>focus</Filter>
+    </ClInclude>
+    <ClInclude Include="window\client_view.h">
+      <Filter>window</Filter>
+    </ClInclude>
+    <ClInclude Include="window\custom_frame_view.h">
+      <Filter>window</Filter>
+    </ClInclude>
+    <ClInclude Include="window\dialog_client_view.h">
+      <Filter>window</Filter>
+    </ClInclude>
+    <ClInclude Include="window\dialog_delegate.h">
+      <Filter>window</Filter>
+    </ClInclude>
+    <ClInclude Include="window\message_box_flags.h">
+      <Filter>window</Filter>
+    </ClInclude>
+    <ClInclude Include="window\native_frame_view.h">
+      <Filter>window</Filter>
+    </ClInclude>
+    <ClInclude Include="window\non_client_view.h">
+      <Filter>window</Filter>
+    </ClInclude>
+    <ClInclude Include="window\window.h">
+      <Filter>window</Filter>
+    </ClInclude>
+    <ClInclude Include="window\window_delegate.h">
+      <Filter>window</Filter>
+    </ClInclude>
+    <ClInclude Include="window\window_win.h">
+      <Filter>window</Filter>
+    </ClInclude>
+    <ClInclude Include="dragdrop\drag_drop_types.h">
+      <Filter>dragdrop</Filter>
+    </ClInclude>
+    <ClInclude Include="dragdrop\drag_source.h">
+      <Filter>dragdrop</Filter>
+    </ClInclude>
+    <ClInclude Include="dragdrop\drop_helper.h">
+      <Filter>dragdrop</Filter>
+    </ClInclude>
+    <ClInclude Include="dragdrop\drop_target.h">
+      <Filter>dragdrop</Filter>
+    </ClInclude>
+    <ClInclude Include="dragdrop\drop_target_win.h">
+      <Filter>dragdrop</Filter>
+    </ClInclude>
+    <ClInclude Include="dragdrop\os_exchange_data.h">
+      <Filter>dragdrop</Filter>
+    </ClInclude>
+    <ClInclude Include="dragdrop\os_exchange_data_provider_win.h">
+      <Filter>dragdrop</Filter>
+    </ClInclude>
+    <ClInclude Include="clipboard\clipboard_util_win.h">
+      <Filter>clipboard</Filter>
+    </ClInclude>
+    <ClInclude Include="layout\box_layout.h">
+      <Filter>layout</Filter>
+    </ClInclude>
+    <ClInclude Include="layout\fill_layout.h">
+      <Filter>layout</Filter>
+    </ClInclude>
+    <ClInclude Include="layout\grid_layout.h">
+      <Filter>layout</Filter>
+    </ClInclude>
+    <ClInclude Include="layout\layout_manager.h">
+      <Filter>layout</Filter>
+    </ClInclude>
+    <ClInclude Include="layout\standard_layout.h">
+      <Filter>layout</Filter>
+    </ClInclude>
+    <ClInclude Include="gfx\background.h">
+      <Filter>gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="gfx\border.h">
+      <Filter>gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="gfx\default_theme_provider.h">
+      <Filter>gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="gfx\painter.h">
+      <Filter>gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="gfx\theme_provider.h">
+      <Filter>gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="app\accelerator.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="app\dwmapi_wrapper.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="app\event.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="app\keyboard_code_conversion_win.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="app\keyboard_codes_win.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="app\resource_bundle.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="app\screen.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="app\system_monitor.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="app\windows_util.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="animation\bounds_animator.h">
+      <Filter>animation</Filter>
+    </ClInclude>
+    <ClInclude Include="view.h" />
+    <ClInclude Include="view_delegate.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="accessibility\view_accessibility.cpp">
+      <Filter>accessibility</Filter>
+    </ClCompile>
+    <ClCompile Include="accessibility\view_accessibility_wrapper.cpp">
+      <Filter>accessibility</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\native_control_win.cpp">
+      <Filter>controls</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\native_view_host.cpp">
+      <Filter>controls</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\native_view_host_win.cpp">
+      <Filter>controls</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\single_split_view.cpp">
+      <Filter>controls</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\button\button.cpp">
+      <Filter>controls\button</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\button\custom_button.cpp">
+      <Filter>controls\button</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\button\image_button.cpp">
+      <Filter>controls\button</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\button\native_button.cpp">
+      <Filter>controls\button</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\button\native_button_win.cpp">
+      <Filter>controls\button</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\button\text_button.cpp">
+      <Filter>controls\button</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\aero_tooltip_manager.cpp">
+      <Filter>widget</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\root_view.cpp">
+      <Filter>widget</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\tooltip_manager.cpp">
+      <Filter>widget</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\tooltip_manager_win.cpp">
+      <Filter>widget</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\widget_win.cpp">
+      <Filter>widget</Filter>
+    </ClCompile>
+    <ClCompile Include="focus\accelerator_handler.cpp">
+      <Filter>focus</Filter>
+    </ClCompile>
+    <ClCompile Include="focus\focus_manager.cpp">
+      <Filter>focus</Filter>
+    </ClCompile>
+    <ClCompile Include="focus\focus_search.cpp">
+      <Filter>focus</Filter>
+    </ClCompile>
+    <ClCompile Include="focus\focus_util_win.cpp">
+      <Filter>focus</Filter>
+    </ClCompile>
+    <ClCompile Include="focus\view_storage.cpp">
+      <Filter>focus</Filter>
+    </ClCompile>
+    <ClCompile Include="window\client_view.cpp">
+      <Filter>window</Filter>
+    </ClCompile>
+    <ClCompile Include="window\custom_frame_view.cpp">
+      <Filter>window</Filter>
+    </ClCompile>
+    <ClCompile Include="window\dialog_client_view.cpp">
+      <Filter>window</Filter>
+    </ClCompile>
+    <ClCompile Include="window\dialog_delegate.cpp">
+      <Filter>window</Filter>
+    </ClCompile>
+    <ClCompile Include="window\native_frame_view.cpp">
+      <Filter>window</Filter>
+    </ClCompile>
+    <ClCompile Include="window\non_client_view.cpp">
+      <Filter>window</Filter>
+    </ClCompile>
+    <ClCompile Include="window\window.cpp">
+      <Filter>window</Filter>
+    </ClCompile>
+    <ClCompile Include="window\window_delegate.cpp">
+      <Filter>window</Filter>
+    </ClCompile>
+    <ClCompile Include="window\window_win.cpp">
+      <Filter>window</Filter>
+    </ClCompile>
+    <ClCompile Include="dragdrop\drag_drop_types.cpp">
+      <Filter>dragdrop</Filter>
+    </ClCompile>
+    <ClCompile Include="dragdrop\drag_source.cpp">
+      <Filter>dragdrop</Filter>
+    </ClCompile>
+    <ClCompile Include="dragdrop\drop_helper.cpp">
+      <Filter>dragdrop</Filter>
+    </ClCompile>
+    <ClCompile Include="dragdrop\drop_target.cpp">
+      <Filter>dragdrop</Filter>
+    </ClCompile>
+    <ClCompile Include="dragdrop\drop_target_win.cpp">
+      <Filter>dragdrop</Filter>
+    </ClCompile>
+    <ClCompile Include="dragdrop\os_exchange_data.cpp">
+      <Filter>dragdrop</Filter>
+    </ClCompile>
+    <ClCompile Include="dragdrop\os_exchange_data_provider_win.cpp">
+      <Filter>dragdrop</Filter>
+    </ClCompile>
+    <ClCompile Include="clipboard\clipboard_util_win.cpp">
+      <Filter>clipboard</Filter>
+    </ClCompile>
+    <ClCompile Include="layout\box_layout.cpp">
+      <Filter>layout</Filter>
+    </ClCompile>
+    <ClCompile Include="layout\fill_layout.cpp">
+      <Filter>layout</Filter>
+    </ClCompile>
+    <ClCompile Include="layout\grid_layout.cpp">
+      <Filter>layout</Filter>
+    </ClCompile>
+    <ClCompile Include="layout\layout_manager.cpp">
+      <Filter>layout</Filter>
+    </ClCompile>
+    <ClCompile Include="gfx\background.cpp">
+      <Filter>gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="gfx\border.cpp">
+      <Filter>gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="gfx\default_theme_provider.cpp">
+      <Filter>gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="gfx\painter.cpp">
+      <Filter>gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="gfx\theme_provider.cpp">
+      <Filter>gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="app\dwmapi_wrapper.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="app\event.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="app\keyboard_code_conversion_win.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="app\resource_bundle.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="app\screen.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="app\system_monitor.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="app\windows_util.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="animation\bounds_animator.cpp">
+      <Filter>animation</Filter>
+    </ClCompile>
+    <ClCompile Include="view.cpp" />
+  </ItemGroup>
+</Project>
