@@ -9,6 +9,7 @@
 #include "base/windows_version.h"
 
 #include "dwmapi_wrapper.h"
+#include <algorithm>
 
 namespace view
 {

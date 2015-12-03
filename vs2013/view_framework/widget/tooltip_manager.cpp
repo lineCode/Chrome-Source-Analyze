@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "gfx/font.h"
+#include <algorithm>
 
 namespace view
 {

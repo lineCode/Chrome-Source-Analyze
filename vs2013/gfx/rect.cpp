@@ -7,6 +7,8 @@
 
 #include "insets.h"
 
+#include <algorithm>
+
 namespace
 {
 
