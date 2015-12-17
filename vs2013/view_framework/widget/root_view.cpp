@@ -147,7 +147,7 @@ namespace view
             if(!pending_paint_task_)
             {
                 pending_paint_task_ = new PaintTask(this);
-                MessageLoop::current()->PostTask(pending_paint_task_);
+                MessageLoop::current()->PostTask(std::bind(&PaintTask::Run, pending_paint_task_));
             }
             paint_task_needed_ = true;
         }

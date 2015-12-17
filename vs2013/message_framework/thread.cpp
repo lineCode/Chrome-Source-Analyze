@@ -219,7 +219,8 @@ namespace base
         }
 
         stopping_ = true;
-        message_loop_->PostTask(new ThreadQuitTask());
+        //message_loop_->PostTask(new ThreadQuitTask());
+		message_loop_->PostTask(std::bind(&ThreadQuitTask::Run, new ThreadQuitTask()));
     }
 
     void Thread::Run(MessageLoop* message_loop)

@@ -25,10 +25,15 @@ namespace base
         // (如果对象还在的话是可以保证的), 如果没有投递成功会删除任务.
         // 如果线程存在且任务投递成功, 函数返回true. 注意即使任务投递成功, 也不能保证
         // 被执行, 因为目标线程的消息队列中可能已经存在一个Quit消息了.
-        virtual bool PostTask(Task* task) = 0;
+        /*virtual bool PostTask(Task* task) = 0;
         virtual bool PostDelayedTask(Task* task, int64 delay_ms) = 0;
         virtual bool PostNonNestableTask(Task* task) = 0;
-        virtual bool PostNonNestableDelayedTask(Task* task, int64 delay_ms) = 0;
+        virtual bool PostNonNestableDelayedTask(Task* task, int64 delay_ms) = 0;*/
+
+		virtual bool PostTask(Closure task) = 0;
+		virtual bool PostDelayedTask(Closure task, int64 delay_ms) = 0;
+		virtual bool PostNonNestableTask(Closure task) = 0;
+		virtual bool PostNonNestableDelayedTask(Closure task, int64 delay_ms) = 0;
         // 检查调用者当前是否在proxy代表的线程中执行.
         virtual bool BelongsToCurrentThread() = 0;
 

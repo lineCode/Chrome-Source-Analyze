@@ -21,8 +21,11 @@ namespace base
 
         delayed_task_ = timer_task;
         delayed_task_->timer_ = this;
-        MessageLoop::current()->PostDelayedTask(timer_task,
-            static_cast<int>(timer_task->delay_.InMillisecondsRoundedUp()));
+        //MessageLoop::current()->PostDelayedTask(timer_task,
+        //    static_cast<int>(timer_task->delay_.InMillisecondsRoundedUp()));
+
+		MessageLoop::current()->PostDelayedTask(std::bind(&TimerTask::Run, timer_task),
+			static_cast<int>(timer_task->delay_.InMillisecondsRoundedUp()));
     }
 
 } //namespace base

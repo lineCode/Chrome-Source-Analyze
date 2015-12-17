@@ -1420,9 +1420,10 @@ namespace view
                     // and send us further updates.
                     ignore_window_pos_changes_ = true;
                     DCHECK(ignore_pos_changes_factory_.empty());
-                    MessageLoop::current()->PostTask(
+                    /*MessageLoop::current()->PostTask(
                         ignore_pos_changes_factory_.NewRunnableMethod(
-                        &WindowWin::StopIgnoringPosChanges));
+                        &WindowWin::StopIgnoringPosChanges));*/
+					MessageLoop::current()->PostTask(std::bind(&WindowWin::StopIgnoringPosChanges, this));
                 }
                 last_monitor_ = monitor;
                 last_monitor_rect_ = monitor_rect;

@@ -421,11 +421,13 @@ namespace view
         ::SetWindowPos(keyboard_tooltip_hwnd_, NULL, rect_bounds.left,
             rect_bounds.top, 0, 0,
             SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
-        MessageLoop::current()->PostDelayedTask(
+        /*MessageLoop::current()->PostDelayedTask(
             keyboard_tooltip_factory_.NewRunnableMethod(
             &TooltipManagerWin::DestroyKeyboardTooltipWindow,
             keyboard_tooltip_hwnd_),
-            kDefaultTimeout);
+            kDefaultTimeout);*/
+
+		MessageLoop::current()->PostDelayedTask(std::bind(&TooltipManagerWin::DestroyKeyboardTooltipWindow, this, keyboard_tooltip_hwnd_), kDefaultTimeout);
     }
 
     void TooltipManagerWin::HideKeyboardTooltip()

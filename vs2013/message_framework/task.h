@@ -8,6 +8,9 @@
 
 #include "raw_scoped_refptr_mismatch_checker.h"
 
+#include <functional>
+
+typedef std::function<void(void)> Closure;
 // Task表示可执行的任务, 通常用于在其它线程中执行代码或者在消息循环中安排
 // 将来执行.
 class Task

@@ -143,9 +143,8 @@ private:
         {
             MessageLoop* loop = (*it).first;
             ObserverList<ObserverType>* list = (*it).second;
-            loop->PostTask(NewRunnableMethod(this,
-                &ObserverListThreadSafe<ObserverType>::
-                template NotifyWrapper<Method, Params>, list, method));
+            loop->PostTask(std::bind(&ObserverListThreadSafe<ObserverType>::
+                template NotifyWrapper<Method, Params>, this, list, method));
         }
     }
 

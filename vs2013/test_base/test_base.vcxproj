@@ -64,7 +64,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>lib_base-vc80-mt-sd.lib;lib_rfc_algorithm-vc80-mt-sd.lib;lib_message_framework-vc80-mt-sd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>../bin/test_base-d.exe</OutputFile>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>

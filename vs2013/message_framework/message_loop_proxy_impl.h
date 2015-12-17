@@ -19,10 +19,16 @@ namespace base
     public:
         ~MessageLoopProxyImpl();
 
-        virtual bool PostTask(Task* task);
+        /*virtual bool PostTask(Task* task);
         virtual bool PostDelayedTask(Task* task, int64 delay_ms);
         virtual bool PostNonNestableTask(Task* task);
-        virtual bool PostNonNestableDelayedTask(Task* task, int64 delay_ms);
+        virtual bool PostNonNestableDelayedTask(Task* task, int64 delay_ms);*/
+
+		virtual bool PostTask(Closure task);
+		virtual bool PostDelayedTask(Closure task, int64 delay_ms);
+		virtual bool PostNonNestableTask(Closure task);
+		virtual bool PostNonNestableDelayedTask(Closure task, int64 delay_ms);
+
         virtual bool BelongsToCurrentThread();
 
         void WillDestroyCurrentMessageLoop();
@@ -33,7 +39,8 @@ namespace base
 
     private:
         MessageLoopProxyImpl();
-        bool PostTaskHelper(Task* task, int64 delay_ms, bool nestable);
+		//bool PostTaskHelper(Task* task, int64 delay_ms, bool nestable);
+		bool PostTaskHelper(Closure task, int64 delay_ms, bool nestable);
 
         friend class MessageLoopProxy;
 

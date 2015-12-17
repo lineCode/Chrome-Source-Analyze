@@ -132,8 +132,7 @@ namespace view
 
     void AeroTooltipManager::InitialTimer::Start(int time)
     {
-        MessageLoop::current()->PostDelayedTask(NewRunnableMethod(
-            this, &InitialTimer::Execute), time);
+        MessageLoop::current()->PostDelayedTask(std::bind(&InitialTimer::Execute, this), time);
     }
 
     void AeroTooltipManager::InitialTimer::Disown()
@@ -142,9 +141,10 @@ namespace view
     }
 
     void AeroTooltipManager::InitialTimer::Execute()
-    {
+    {			OutputDebugStringA("aaaa");
         if(manager_)
         {
+
             manager_->OnTimer();
         }
     }

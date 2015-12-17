@@ -143,6 +143,7 @@ namespace view
 
     void AeroTooltipManager::InitialTimer::Execute()
     {
+			OutputDebugStringA("aaaa");
         if(manager_)
         {
             manager_->OnTimer();

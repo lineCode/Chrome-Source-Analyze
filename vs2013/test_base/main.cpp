@@ -78,7 +78,7 @@ public:
             MessageLoop::current()->Quit();
             return;
         }
-        MessageLoop::current()->PostDelayedTask(new MainThreadPrintTask(), 1000);
+        MessageLoop::current()->PostDelayedTask(std::bind(&MainThreadPrintTask::Run, new MainThreadPrintTask()), 1000);
     }
 };
 
@@ -89,7 +89,7 @@ public:
     {
         base::AutoLock al(lock);
         std::cout << "PrintTask Run()" << std::endl;
-        MessageLoop::current()->PostDelayedTask(new PrintTask(), 3000);
+        MessageLoop::current()->PostDelayedTask(std::bind(&PrintTask::Run, new PrintTask()), 3000);
     }
 };
 
@@ -256,10 +256,10 @@ int main()
     delete callback;
 
     thred.Start();
-    thred.message_loop()->PostDelayedTask(new PrintTask(), 1000);
+    thred.message_loop()->PostDelayedTask(std::bind(&PrintTask::Run, new PrintTask()), 1000);
 
     MessageLoop msg_loop;
-    msg_loop.PostDelayedTask(new MainThreadPrintTask(), 3000);
+    msg_loop.PostDelayedTask(std::bind(&MainThreadPrintTask::Run, new MainThreadPrintTask()), 3000);
     msg_loop.Run();
 
     thred.Stop();

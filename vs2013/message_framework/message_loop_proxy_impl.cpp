@@ -21,22 +21,22 @@ namespace base
         }
     }
 
-    bool MessageLoopProxyImpl::PostTask(Task* task)
+	bool MessageLoopProxyImpl::PostTask(Closure task)
     {
         return PostTaskHelper(task, 0, true);
     }
 
-    bool MessageLoopProxyImpl::PostDelayedTask(Task* task, int64 delay_ms)
+	bool MessageLoopProxyImpl::PostDelayedTask(Closure task, int64 delay_ms)
     {
         return PostTaskHelper(task, delay_ms, true);
     }
 
-    bool MessageLoopProxyImpl::PostNonNestableTask(Task* task)
+	bool MessageLoopProxyImpl::PostNonNestableTask(Closure task)
     {
         return PostTaskHelper(task, 0, false);
     }
 
-    bool MessageLoopProxyImpl::PostNonNestableDelayedTask(Task* task,
+	bool MessageLoopProxyImpl::PostNonNestableDelayedTask(Closure task,
         int64 delay_ms)
     {
         return PostTaskHelper(task, delay_ms, false);
@@ -49,7 +49,7 @@ namespace base
             (MessageLoop::current()==target_message_loop_));
     }
 
-    bool MessageLoopProxyImpl::PostTaskHelper(Task* task, int64 delay_ms,
+    /*bool MessageLoopProxyImpl::PostTaskHelper(Task* task, int64 delay_ms,
         bool nestable)
     {
         bool ret = false;
@@ -74,7 +74,34 @@ namespace base
             delete task;
         }
         return ret;
-    }
+    }*/
+
+	bool MessageLoopProxyImpl::PostTaskHelper(Closure task, int64 delay_ms,
+		bool nestable)
+	{
+		bool ret = false;
+		{
+			AutoLock lock(message_loop_lock_);
+			if (target_message_loop_)
+			{
+				if (nestable)
+				{
+					target_message_loop_->PostDelayedTask(task, delay_ms);
+				}
+				else
+				{
+					target_message_loop_->PostNonNestableDelayedTask(task,
+						delay_ms);
+				}
+				ret = true;
+			}
+		}
+		if (!ret)
+		{
+			//delete task;
+		}
+		return ret;
+	}
 
     void MessageLoopProxyImpl::OnDestruct()
     {
@@ -84,8 +111,8 @@ namespace base
             if(target_message_loop_ &&
                 (MessageLoop::current()!=target_message_loop_))
             {
-                target_message_loop_->DeleteSoon(this);
-                delete_later = true;
+                //target_message_loop_->DeleteSoon(this);
+                //delete_later = true;
             }
         }
         if(!delete_later)

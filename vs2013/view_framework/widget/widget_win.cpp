@@ -313,9 +313,11 @@ namespace view
             // we don't destroy the window before the callback returned (as the caller
             // may delete ourselves on destroy and the ATL callback would still
             // dereference us when the callback returns).
-            MessageLoop::current()->PostTask(
+            /*MessageLoop::current()->PostTask(
                 close_widget_factory_.NewRunnableMethod(
-                &WidgetWin::CloseNow));
+                &WidgetWin::CloseNow));*/
+
+			MessageLoop::current()->PostTask(std::bind(&WidgetWin::CloseNow, this));
         }
     }
 

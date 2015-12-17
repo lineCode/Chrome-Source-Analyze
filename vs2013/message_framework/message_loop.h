@@ -90,10 +90,15 @@ public:
     //
     // 注意: 这些方法可以在任意线程中调用. Task只会在执行MessageLoop::Run()
     // 的线程中调用.
-    void PostTask(Task* task);
-    void PostDelayedTask(Task* task, int64 delay_ms);
-    void PostNonNestableTask(Task* task);
-    void PostNonNestableDelayedTask(Task* task, int64 delay_ms);
+    //void PostTask(Task* task);
+	void PostTask(Closure task);
+
+	//void PostDelayedTask(Task* task, int64 delay_ms);
+	void PostDelayedTask(Closure task, int64 delay_ms);
+	//void PostNonNestableTask(Task* task);
+	void PostNonNestableTask(Closure task);
+	//void PostNonNestableDelayedTask(Task* task, int64 delay_ms);
+	void PostNonNestableDelayedTask(Closure task, int64 delay_ms);
 
     // 一种删除指定对象的PostTask, 当对象需要存活到MessageLoop的下一次循环时会
     // 用到(比如在IPC回调时直接删除RenderProcessHost并不好).
@@ -101,11 +106,11 @@ public:
     // 注意: 方法可以在任意线程中调用. 对象将在执行MessageLoop::Run()的线程中
     // 被删除, 如果和调用PostDelayedTask()的线程不是同一线程, 那么T必须继承自
     // RefCountedThreadSafe<T>!
-    template<class T>
+    /*template<class T>
     void DeleteSoon(T* object)
     {
         PostNonNestableTask(new DeleteTask<T>(object));
-    }
+    }*/
 
     // 一种释放指定对象引用计数(通过调用Release方法)的PostTask, 当对象需要存活
     // 到MessageLoop的下一次循环时会或者对象需要在特定线程中释放时会用到.
@@ -267,13 +272,17 @@ protected:
     // 结构体按值拷贝.
     struct PendingTask
     {
-        Task* task;                   // 执行的任务.
+        //Task* task;                   // 执行的任务.
+		Closure task;
         base::Time delayed_run_time;  // 什么时候执行.
         int sequence_num;             // 用于简化按照时间排序.
         bool nestable;                // 允许嵌套循环派发时为true.
 
-        PendingTask(Task* task, bool nestable)
-            : task(task), sequence_num(0), nestable(nestable) {}
+        //PendingTask(Task* task, bool nestable)
+        //    : task(task), sequence_num(0), nestable(nestable) {}
+
+		PendingTask(Closure task, bool nestable)
+			: task(task), sequence_num(0), nestable(nestable) {}
 
         // 用于支持排序.
         bool operator<(const PendingTask& other) const;
@@ -317,7 +326,8 @@ protected:
     bool QueueOrRunTask(Task* new_task);
 
     // 执行特定的任务并删除.
-    void RunTask(Task* task);
+    //void RunTask(Task* task);
+	void RunTask(Closure task);
 
     // 调用RunTask, 如果不能立即执行则添加pending_task到延迟队列. 任务被执行返
     // 回true.
@@ -335,7 +345,8 @@ protected:
     bool DeletePendingTasks();
 
     // 发送一个任务到incoming_queue_.
-    void PostTask_Helper(Task* task, int64 delay_ms, bool nestable);
+	//void PostTask_Helper(Task* task, int64 delay_ms, bool nestable);
+	void PostTask_Helper(Closure task, int64 delay_ms, bool nestable);
 
     virtual bool DoWork();
     virtual bool DoDelayedWork(base::Time* next_delayed_work_time);

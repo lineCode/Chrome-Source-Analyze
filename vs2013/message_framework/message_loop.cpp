@@ -196,7 +196,7 @@ bool MessageLoop::ProcessNextDelayedNonNestableTask()
         return false;
     }
 
-    Task* task = deferred_non_nestable_work_queue_.front().task;
+    Closure task = deferred_non_nestable_work_queue_.front().task;
     deferred_non_nestable_work_queue_.pop();
 
     RunTask(task);
@@ -229,28 +229,33 @@ void MessageLoop::QuitNow()
     }
 }
 
-void MessageLoop::PostTask(Task* task)
+/*void MessageLoop::PostTask(Task* task)
 {
     PostTask_Helper(task, 0, true);
+}*/
+
+void MessageLoop::PostTask(Closure task)
+{
+	PostTask_Helper(task, 0, true);
 }
 
-void MessageLoop::PostDelayedTask(Task* task, int64 delay_ms)
+void MessageLoop::PostDelayedTask(Closure task, int64 delay_ms)
 {
     PostTask_Helper(task, delay_ms, true);
 }
 
-void MessageLoop::PostNonNestableTask(Task* task)
+void MessageLoop::PostNonNestableTask(Closure task)
 {
     PostTask_Helper(task, 0, false);
 }
 
-void MessageLoop::PostNonNestableDelayedTask(Task* task, int64 delay_ms)
+void MessageLoop::PostNonNestableDelayedTask(Closure task, int64 delay_ms)
 {
     PostTask_Helper(task, delay_ms, false);
 }
 
 // 可能被后台线程调用!
-void MessageLoop::PostTask_Helper(Task* task, int64 delay_ms, bool nestable)
+/*void MessageLoop::PostTask_Helper(Task* task, int64 delay_ms, bool nestable)
 {
     PendingTask pending_task(task, nestable);
 
@@ -310,6 +315,68 @@ void MessageLoop::PostTask_Helper(Task* task, int64 delay_ms, bool nestable)
     // 锁外面调用ScheduleWork.
 
     pump->ScheduleWork();
+}*/
+
+void MessageLoop::PostTask_Helper(Closure task, int64 delay_ms, bool nestable)
+{
+	PendingTask pending_task(task, nestable);
+
+	if (delay_ms > 0)
+	{
+		pending_task.delayed_run_time = base::Time::Now() +
+			base::TimeDelta::FromMilliseconds(delay_ms);
+
+		if (high_resolution_timer_expiration_.is_null())
+		{
+			// Windows时钟的精度是15.6ms. 如果只对小于15.6ms的时钟启用高精度时
+			// 钟, 那么18ms的时钟大约会在32ms时触发, 精度误差非常大. 因此需要
+			// 对所有小于2倍15.6ms的时钟启用高精度时钟. 这是精度和电源管理之间
+			// 的平衡.
+			bool needs_high_res_timers =
+				delay_ms < (2 * base::Time::kMinLowResolutionThresholdMs);
+			if (needs_high_res_timers)
+			{
+				base::Time::ActivateHighResolutionTimer(true);
+				high_resolution_timer_expiration_ = base::TimeTicks::Now() +
+					base::TimeDelta::FromMilliseconds(kHighResolutionTimerModeLeaseTimeMs);
+			}
+		}
+	}
+	else
+	{
+		DCHECK_EQ(delay_ms, 0) << "delay should not be negative";
+	}
+
+	if (!high_resolution_timer_expiration_.is_null())
+	{
+		if (base::TimeTicks::Now() > high_resolution_timer_expiration_)
+		{
+			base::Time::ActivateHighResolutionTimer(false);
+			high_resolution_timer_expiration_ = base::TimeTicks();
+		}
+	}
+
+	// 警告: 不要在当前线程中直接循环执行任务, 这样可能会堵塞外部线程.
+	// 把所有的任务都放入队列.
+
+	scoped_refptr<base::MessagePump> pump;
+	{
+		base::AutoLock locked(incoming_queue_lock_);
+
+		bool was_empty = incoming_queue_.empty();
+		incoming_queue_.push(pending_task);
+		if (!was_empty)
+		{
+			return; // 在别处启动了子消息泵.
+		}
+
+		pump = pump_;
+	}
+	// 因为incoming_queue_中可能有销毁本消息循环的任务, 所以函数完成之前不能
+	// 解除锁保护. 使用一个栈对象引用消息泵, 这样我们可以在incoming_queue_lock_
+	// 锁外面调用ScheduleWork.
+
+	pump->ScheduleWork();
 }
 
 void MessageLoop::SetNestableTasksAllowed(bool allowed)
@@ -336,16 +403,17 @@ bool MessageLoop::IsNested()
     return state_->run_depth > 1;
 }
 
-void MessageLoop::RunTask(Task* task)
+void MessageLoop::RunTask(Closure task)
 {
     DCHECK(nestable_tasks_allowed_);
     // 执行任务, 采取最严格方式: 不能重入.
     nestable_tasks_allowed_ = false;
 
     FOR_EACH_OBSERVER(TaskObserver, task_observers_, WillProcessTask());
-    task->Run();
+    //task->Run();
+	task();
     FOR_EACH_OBSERVER(TaskObserver, task_observers_, DidProcessTask());
-    delete task;
+    //delete task;
 
     nestable_tasks_allowed_ = true;
 }
@@ -408,26 +476,26 @@ bool MessageLoop::DeletePendingTasks()
         }
         else
         {
-            delete pending_task.task;
+            //delete pending_task.task;
         }
     }
     did_work |= !deferred_non_nestable_work_queue_.empty();
     while(!deferred_non_nestable_work_queue_.empty())
     {
-        Task* task = NULL;
+        Closure task/* = NULL*/;
         task = deferred_non_nestable_work_queue_.front().task;
         deferred_non_nestable_work_queue_.pop();
-        if(task)
+        /*if(task)
         {
             delete task;
-        }
+        }*/
     }
     did_work |= !delayed_work_queue_.empty();
     while(!delayed_work_queue_.empty())
     {
-        Task* task = delayed_work_queue_.top().task;
+        Closure task = delayed_work_queue_.top().task;
         delayed_work_queue_.pop();
-        delete task;
+        //delete task;
     }
     return did_work;
 }
@@ -457,7 +525,7 @@ bool MessageLoop::DoWork()
             {
                 AddToDelayedWorkQueue(pending_task);
                 // 如果最上面的任务发生变化, 需要重新调度时间.
-                if(delayed_work_queue_.top().task == pending_task.task)
+                //if(delayed_work_queue_.top().task.target() == pending_task.task.target())
                 {
                     pump_->ScheduleDelayedWork(pending_task.delayed_run_time);
                 }
