@@ -5,6 +5,7 @@
 #include <commctrl.h>
 #include <shlobj.h>
 
+
 #include "base/rtl.h"
 
 #include "message_framework/message_loop.h"
@@ -132,7 +133,7 @@ namespace view
 
     void AeroTooltipManager::InitialTimer::Start(int time)
     {
-        MessageLoop::current()->PostDelayedTask(std::bind(&InitialTimer::Execute, this), time);
+		MessageLoop::current()->PostDelayedTask(std::bind(&InitialTimer::Execute, scoped_refptr<InitialTimer>(this)), time);
     }
 
     void AeroTooltipManager::InitialTimer::Disown()
@@ -141,7 +142,7 @@ namespace view
     }
 
     void AeroTooltipManager::InitialTimer::Execute()
-    {			OutputDebugStringA("aaaa");
+    {			
         if(manager_)
         {
 
