@@ -14,7 +14,7 @@
 
 常规thread生命周期：
 
-![thread](https://github.com/llluiop/Chrome-Source-Analyze/raw/master/source/img/chrome-normal-thread)
+![thread](https://github.com/llluiop/Chrome-Source-Analyze/raw/master/source/img/chrome-normal-thread.png)
 
 这是一个普通的线程生命周期，理想情况下，线程做自己的事情，不需要和别的线程打交道，也就不会产生同步的问题。
 
@@ -34,7 +34,7 @@ thread in chrome：
 * UI的耗时操作会分发到IOthread去做，同时IO线程本身也使用 asynchronous/overlapped IO 技术防止自身阻塞在特定操作上
 * 线程间一般来说只使用锁来交换特定的共享数据，也就是说一个线程不应该占用一个锁太久使得另一个线程堵塞在等待在这把锁上
 
-![thread](https://github.com/llluiop/Chrome-Source-Analyze/raw/master/source/img/chrome-thread)
+![thread](https://github.com/llluiop/Chrome-Source-Analyze/raw/master/source/img/chrome-thread.png)
 
 ## diving into thread
 
@@ -88,7 +88,7 @@ thread in chrome：
 我们知道，区别线程对象的目的是为了明确线程的职责，比如UI线程在win平台肯定要处理windows消息，IO线程则要使用层叠IO技术进行IO访问等等，至于不同的ML有什么具体的不同，网上文章很多，这里就不再赘述了。
 有了ML以后，我们还需要一些其他的类与ML协同工作，用于处理一些平台特定操作，内部交换队列(用于与其他线程通信)，外部通信接口(用于接收外部请求,这就是线程间交互的方式)，这些分别对应了**MessagePump, IncomingTaskQueue and MessageLoopProxyImpl**：
 
-![thread](https://github.com/llluiop/Chrome-Source-Analyze/raw/master/source/img/chrome-messageloop)
+![thread](https://github.com/llluiop/Chrome-Source-Analyze/raw/master/source/img/chrome-messageloop.png)
 
 在ML的实现文件可以看到相关的依赖：
 
@@ -149,6 +149,6 @@ IncomingTaskQueue内部维护了一个**TaskQueue incoming_queue_**队列用于�
 MessageLoopProxyImpl:
 具体而言，MessageLoopProxyImpl做的事情比较简单，主要是提供了一系列的PostTask接口，用于接收外部的task，然后放入到IncomingTaskQueue里：
 
-![thread](https://github.com/llluiop/Chrome-Source-Analyze/raw/master/source/img/chrome-thread-interact)
+![thread](https://github.com/llluiop/Chrome-Source-Analyze/raw/master/source/img/chrome-thread-interact.png)
 
 至于如何将所有的请求都可以通过一个PostTask实现，这里也是有一些可以说的地方，我们下次再讲，总而言之，到了这里，我们基本上可以看到线程间是如果进程交互，协同工作的了。

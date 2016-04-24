@@ -21,7 +21,7 @@ chrome作为一个巨大的工程，每个模块，每个功能都要力求设�
 
 这就是chrome现在使用的进程模型：
 
-![process](https://github.com/llluiop/Chrome-Source-Analyze/raw/master/source/img/chrome-mulit-process)
+![process](https://github.com/llluiop/Chrome-Source-Analyze/raw/master/source/img/chrome-mulit-process.png)
 
 多进程设计自然也有它的坏处，那就是交互，这也体现了软件设计里没有银弹的思想，想象一下oop编程里为什么要强调对象职责的单一，而实际编程中为什么容易出现巨类，说白了就是职责单一会造成通信的复杂，这和多进程或者多线程遇到的问题都是一样的，想想多线程的锁为何要存在。。。
 
