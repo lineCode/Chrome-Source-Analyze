@@ -37,3 +37,118 @@ thread in chrome：
 ![thread](https://github.com/llluiop/Chrome-Source-Analyze/raw/master/source/img/chrome-thread)
 
 ## diving into thread
+
+对于thread的交互，现在我们需要讨论的就是：
+
+* 线程对象自身是如果设计的，因为线程有着不同的职责，一个好的可以扩展的设计是非常有必要的
+* 线程间是如何交互，对于上面的图来说就是我们是如何将一个请求打包发送到另一个线程的，这其中必然牵扯到了锁，回调通知等
+
+### 线程对象的设计：
+
+对于一个线程对象而言，上面我们介绍过对于常驻线程而言，我们需要维护一个内部的线程循环来不停的执行相关的操作，对于chrome thread自然的抽象了这个循环对象**MessageLoop**：
+
+    thread.h
+    
+    class BASE_EXPORT Thread : PlatformThread::Delegate { 
+        ....
+        // The thread's message loop.  Valid only while the thread is alive.  Set
+        // by the created thread.
+        MessageLoop* message_loop_;
+        
+        struct BASE_EXPORT Options {
+            // Specifies the type of message loop that will be allocated on the thread.
+            // This is ignored if message_pump_factory.is_null() is false.
+            MessageLoop::Type message_loop_type;
+        };
+    };
+    
+    外部代码在创建thread对象的时候，会传入一个Options对象，用于指明创建何种类型的MessageLoop
+    
+那么**MessageLoop**分为几种，又为何划的呢：
+
+* TYPE_DEFAULT This type of ML only supports tasks and timers.
+* TYPE_UI  This type of ML also supports native UI events (e.g., Windows messages).
+* TYPE_IO  This type of ML also supports asynchronous IO
+
+可以看到，按照一般的用法，大致有三种类型的线程，用于执行一般的操作，UI操作和IO操作，对于上面我们说到的UI线程，自然使用的TYPE_UI，IO线程使用的是TYPE_IO，在下面的代码中可以看到相关的线程创建：
+
+    browser_main_loop.cc
+    
+    int BrowserMainLoop::CreateThreads(){
+        base::Thread::Options io_message_loop_options;
+        io_message_loop_options.message_loop_type = base::MessageLoop::TYPE_IO;
+        base::Thread::Options ui_message_loop_options;
+        ui_message_loop_options.message_loop_type = base::MessageLoop::TYPE_UI;
+        
+        ......
+    }
+    
+### 线程间的交互：
+    
+我们知道，区别线程对象的目的是为了明确线程的职责，比如UI线程在win平台肯定要处理windows消息，IO线程则要使用层叠IO技术进行IO访问等等，至于不同的ML有什么具体的不同，网上文章很多，这里就不再赘述了。
+有了ML以后，我们还需要一些其他的类与ML协同工作，用于处理一些平台特定操作，内部交换队列(用于与其他线程通信)，外部通信接口(用于接收外部请求,这就是线程间交互的方式)，这些分别对应了**MessagePump, IncomingTaskQueue and MessageLoopProxyImpl**：
+
+![thread](https://github.com/llluiop/Chrome-Source-Analyze/raw/master/source/img/chrome-messageloop)
+
+在ML的实现文件可以看到相关的依赖：
+
+    class BASE_EXPORT MessageLoop : public MessagePump::Delegate {
+        
+        scoped_refptr<SingleThreadTaskRunner> task_runner() {
+            return message_loop_proxy_;
+        }
+        
+        scoped_ptr<MessagePump> pump_;        
+        scoped_refptr<internal::IncomingTaskQueue> incoming_task_queue_;
+    }
+
+下面分别介绍下这三种：
+
+* MessagePump
+* IncomingTaskQueue
+* MessageLoopProxyImpl
+
+MessagePump：
+MP一般和ML是成对出现，用于处理一些本地事件，例如windows消息，IO消息，我们知道对于一个MP而言，它应该可以驱动所有的消息的，所以它的设计即要可以驱动自己的业务，也需要驱动ML里的业务，所以它的实现：
+
+    //   for (;;) {
+    //     bool did_work = DoInternalWork();  //驱动自己逻辑
+    //     if (should_quit_)
+    //       break;
+    //
+    //     did_work |= delegate_->DoWork();   //注意，这里的delegate就是MessageLoop，这样可以将ML的逻辑和MP的逻辑同一起来
+    //     if (should_quit_)
+    //       break;
+    //
+    //     TimeTicks next_time;
+    //     did_work |= delegate_->DoDelayedWork(&next_time);
+    //     if (should_quit_)
+    //       break;
+    //
+    //     if (did_work)
+    //       continue;
+    //
+    //     did_work = delegate_->DoIdleWork();
+    //     if (should_quit_)
+    //       break;
+    //
+    //     if (did_work)
+    //       continue;
+    //
+    //     WaitForWork();
+    //   }
+    
+这样，在一次线程循环里，MP先处理自身类型的消息，例如window message，然后再检索对应的ML是否有相关的逻辑需要处理，最后等待新的消息到来。
+
+
+IncomingTaskQueue：
+IncomingTaskQueue内部维护了一个**TaskQueue incoming_queue_**队列用于接收外部的task，当一个线程像另一线程发送task时，将会把task放入到这个队列里，然后接收方在delegate_->DoWork()里会调用**ReloadWorkQueue()**，将**incoming_queue_**里的队列换入到当前线程的任务队列里，注意，这里也是基本线程间交互唯一有锁的地方，可以看到这个锁的粒度非常小。
+详细的代码可以参阅：incoming_task_queue.h
+
+
+MessageLoopProxyImpl:
+具体而言，MessageLoopProxyImpl做的事情比较简单，主要是提供了一系列的PostTask接口，用于接收外部的task，然后放入到IncomingTaskQueue里：
+
+![thread](https://github.com/llluiop/Chrome-Source-Analyze/raw/master/source/img/chrome-thread-interact)
+
+至于如何将所有的请求都可以通过一个PostTask实现，这里也是有一些可以说的地方，我们下次再讲，总而言之，到了这里，我们基本上可以看到线程间是如果进程交互，协同工作的了。
