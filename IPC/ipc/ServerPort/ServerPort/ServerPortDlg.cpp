@@ -213,7 +213,7 @@ bool CServerPortDlg::LaunchClientProc()
 
   const std::string channel_id =
       IPC::Channel::GenerateVerifiedChannelID(std::string());
-  base::FilePath client_exe_path(L"C:\\Users\\applechang\\Desktop\\ipc_win_pipe\\ServerPort\\Debug\\ClientPort.exe");
+  base::FilePath client_exe_path(L"ClientPort.exe");
   CommandLine* cmd_line = new CommandLine(client_exe_path);
   cmd_line->AppendSwitchASCII(switches::kProcessChannelID, channel_id);
   channel_.reset(new IPC::ChannelProxy(
