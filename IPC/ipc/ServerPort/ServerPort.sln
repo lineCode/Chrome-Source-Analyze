@@ -1,9 +1,17 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ServerPort", "ServerPort\ServerPort.vcxproj", "{3F82CA1F-FBFA-4F88-9E41-E59BB1460F5E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{12041E57-1BB7-4060-88F9-37324A585983} = {12041E57-1BB7-4060-88F9-37324A585983}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClientPort", "ClientPort\ClientPort.vcxproj", "{A361F571-9410-4A82-BD5C-06CEA068E59F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{12041E57-1BB7-4060-88F9-37324A585983} = {12041E57-1BB7-4060-88F9-37324A585983}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "common", "..\commonlib\common\common.vcxproj", "{12041E57-1BB7-4060-88F9-37324A585983}"
 EndProject

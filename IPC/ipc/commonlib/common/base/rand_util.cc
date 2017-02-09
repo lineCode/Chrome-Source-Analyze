@@ -7,6 +7,7 @@
 #include <math.h>
 
 #include <limits>
+#include <algorithm>
 
 #include "base/basictypes.h"
 #include "base/logging.h"
